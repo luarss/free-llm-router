@@ -1,0 +1,36 @@
+{
+  "name": "tollfree",
+  "version": "0.1.0",
+  "description": "One chat() call over free-tier LLM providers, with automatic model + provider failover.",
+  "keywords": ["llm", "openai", "groq", "failover", "router", "free-tier"],
+  "license": "MIT",
+  "author": "luarss <song.luar@a5x.ai>",
+  "homepage": "https://github.com/luarss/free-llm-router",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luarss/free-llm-router.git",
+    "directory": "js"
+  },
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "tollfree": "dist/cli.js"
+  },
+  "files": ["dist"],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0"
+  }
+}
