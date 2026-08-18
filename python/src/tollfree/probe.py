@@ -6,15 +6,14 @@ For each provider that has a key in .env, this:
                             (free; does not consume chat/token quota)
   - prints any rate-limit headers the provider returns (real remaining quota)
   - for OpenRouter, also GET /key for credit/limit/usage
-
-Run:  ./.venv/bin/python probe.py
 """
 
 import os
+
 import requests
 from dotenv import load_dotenv
 
-from providers import PROVIDERS
+from ._registry import PROVIDERS
 
 load_dotenv()
 
@@ -34,6 +33,7 @@ def _limit_headers(headers):
 
 
 def probe(provider):
+    """Probe a single provider dict; prints a status line (and any limit headers)."""
     key = os.getenv(provider["key_env"])
     name = provider["name"]
     if not key:
@@ -81,7 +81,8 @@ def probe(provider):
             pass
 
 
-if __name__ == "__main__":
+def probe_all():
+    """Probe every provider in the registry."""
     print("Probing providers (no completion tokens spent)\n")
     for p in PROVIDERS:
         probe(p)

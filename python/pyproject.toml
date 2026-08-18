@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tollfree"
+version = "0.1.0"
+description = "One chat() call over free-tier LLM providers, with automatic model + provider failover."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "luarss", email = "song.luar@a5x.ai" }]
+keywords = ["llm", "openai", "groq", "failover", "router", "free-tier"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests>=2.31",
+    "python-dotenv>=1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/luarss/free-llm-router"
+Source = "https://github.com/luarss/free-llm-router"
+
+[project.scripts]
+tollfree = "tollfree.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tollfree"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/tollfree/providers.json" = "tollfree/providers.json"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/tollfree", "README.md"]

@@ -1,12 +1,12 @@
 """
-Free-LLM router: one chat() call, automatic model + provider failover.
+tollfree router: one chat() call, automatic model + provider failover.
 
-Rotation order (as requested):
+Rotation order:
   1. Within a provider, rotate through its models (default first).
   2. When a provider's models are all exhausted, fall over to the next provider.
 
 Usage:
-    from router import chat
+    from tollfree import chat
     reply = chat("Explain CAP theorem in two sentences.")
     print(reply)
 
@@ -20,10 +20,11 @@ Usage:
 """
 
 import os
+
 import requests
 from dotenv import load_dotenv
 
-from providers import PROVIDERS
+from ._registry import PROVIDERS
 
 load_dotenv()  # pulls keys from .env in cwd
 
@@ -36,6 +37,14 @@ _TIMEOUT = 60  # seconds per request
 
 class AllProvidersFailed(Exception):
     """Raised when every configured model on every provider failed."""
+
+
+class _SkipProvider(Exception):
+    pass
+
+
+class _TryNextModel(Exception):
+    pass
 
 
 def _call(provider, model, messages, **params):
@@ -61,14 +70,6 @@ def _call(provider, model, messages, **params):
         raise _TryNextModel(f"HTTP {resp.status_code}: {resp.text[:200]}")
 
     return resp.json()["choices"][0]["message"]["content"]
-
-
-class _SkipProvider(Exception):
-    pass
-
-
-class _TryNextModel(Exception):
-    pass
 
 
 def chat(prompt=None, messages=None, return_meta=False, verbose=False, **params):
@@ -112,12 +113,3 @@ def chat(prompt=None, messages=None, return_meta=False, verbose=False, **params)
 
     detail = "\n".join(f"  {p}/{m}: {r}" for p, m, r in errors) or "  (no keys found)"
     raise AllProvidersFailed(f"All providers/models failed:\n{detail}")
-
-
-if __name__ == "__main__":
-    import sys
-
-    q = " ".join(sys.argv[1:]) or "Say hello in one short sentence."
-    answer, meta = chat(q, return_meta=True, verbose=True)
-    print(f"\n--- {meta['provider']} / {meta['model']} ---")
-    print(answer)
