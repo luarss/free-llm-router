@@ -1,0 +1,60 @@
+{
+  "_comment": "Canonical provider registry — single source of truth for both the PyPI and npm packages. Priority order matters (top = tried first). Every provider speaks the OpenAI-compatible /chat/completions API, so the only per-provider data is base_url, the env var holding the key, and the model list (first model = default). To add a provider: add a block and set its key env var. Run scripts/sync-providers to copy this into both packages.",
+  "providers": [
+    {
+      "name": "groq",
+      "base_url": "https://api.groq.com/openai/v1",
+      "key_env": "GROQ_API_KEY",
+      "models": [
+        "llama-3.3-70b-versatile",
+        "llama-3.1-8b-instant",
+        "qwen/qwen3-32b"
+      ]
+    },
+    {
+      "name": "cerebras",
+      "base_url": "https://api.cerebras.ai/v1",
+      "key_env": "CEREBRAS_API_KEY",
+      "models": [
+        "llama-3.3-70b",
+        "llama3.1-8b",
+        "qwen-3-32b"
+      ]
+    },
+    {
+      "name": "google",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+      "key_env": "GEMINI_API_KEY",
+      "models": [
+        "gemini-3.6-flash",
+        "gemini-3.5-flash-lite"
+      ]
+    },
+    {
+      "name": "openrouter",
+      "base_url": "https://openrouter.ai/api/v1",
+      "key_env": "OPENROUTER_API_KEY",
+      "models": [
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "google/gemini-2.0-flash-exp:free"
+      ]
+    },
+    {
+      "name": "mistral",
+      "base_url": "https://api.mistral.ai/v1",
+      "key_env": "MISTRAL_API_KEY",
+      "models": [
+        "mistral-small-latest",
+        "open-mistral-nemo"
+      ]
+    },
+    {
+      "name": "zai",
+      "base_url": "https://api.z.ai/api/paas/v4",
+      "key_env": "ZAI_API_KEY",
+      "models": [
+        "glm-4-flash"
+      ]
+    }
+  ]
+}
