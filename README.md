@@ -49,6 +49,24 @@ for provider in PROVIDERS:          # priority order (providers.json)
 raise/throw AllProvidersFailed      # only when everything is exhausted
 ```
 
+## How this differs from LiteLLM
+
+Same category — a unified interface over many OpenAI-compatible providers — but a
+very different scope. `tollfree` is built around one job: **stay on free tiers.**
+
+| | tollfree | LiteLLM |
+| --- | --- | --- |
+| Core purpose | Chain free-tier providers so you never pay | General provider-agnostic routing (paid & free) |
+| Failover | Rotate a provider's models, then the next provider | Retries, fallbacks, load balancing, routing strategies |
+| Config | One `providers.json`, keys from `.env` | YAML/env, model aliases, per-key budgets |
+| Extras | `probe` to check keys/limits | Cost tracking, caching, rate limiting, logging, virtual keys, embeddings, a hosted proxy |
+| Surface area | Tiny (two thin packages) | Full SDK + proxy framework, 100+ providers |
+
+Reach for LiteLLM when you need production infrastructure — spend tracking,
+streaming, embeddings, a shared gateway. Reach for `tollfree` when you just want a
+lightweight "never hit a paywall" router. The two aren't exclusive: you could use
+`tollfree`'s ordered free-tier list to drive fallbacks *inside* LiteLLM.
+
 ## Single source of truth
 
 [`providers.json`](providers.json) at the repo root is the canonical registry
