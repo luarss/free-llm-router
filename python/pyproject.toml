@@ -21,6 +21,9 @@ dependencies = [
     "python-dotenv>=1.0",
 ]
 
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
 [project.urls]
 Homepage = "https://github.com/luarss/free-llm-router"
 Source = "https://github.com/luarss/free-llm-router"
@@ -36,3 +39,7 @@ packages = ["src/tollfree"]
 
 [tool.hatch.build.targets.sdist]
 include = ["src/tollfree", "README.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
